@@ -9,11 +9,28 @@ import (
 
 // A channel connects the main and boring goroutines so they can communicate.
 func main() {
-	c := boring("boring!") // Function returning a channel.
-	for i := 0; i < 5; i++ {
+	c := fanIn(boring("Joe"), boring("Ann"))
+	for i := 0; i < 10; i++ {
 		fmt.Printf("%d: You say: %q\n", getGoroutineID(), <-c)
 	}
 	fmt.Printf("%d: You're boring; I'm leaving.\n", getGoroutineID())
+}
+
+func fanIn(input1, input2 <-chan string) <-chan string {
+	c := make(chan string)
+	go func() {
+		for {
+			input := fmt.Sprintf("%d: %s", getGoroutineID(), <-input1)
+			c <- input
+		}
+	}()
+	go func() {
+		for {
+			input := fmt.Sprintf("%d: %s", getGoroutineID(), <-input2)
+			c <- input
+		}
+	}()
+	return c
 }
 
 func boring(msg string) <-chan string { // Returns receive-only channel of strings.
@@ -37,15 +54,26 @@ func getGoroutineID() int {
 	return id
 }
 
-/* result go run main.go
+/* result: go run ./main.go
 1: I'm out of loop
-1: You say: "boring! 0"
-6: sleep done in loop 0
-1: You say: "boring! 1"
-6: sleep done in loop 1
-1: You say: "boring! 2"
-6: sleep done in loop 2
-1: You say: "boring! 3"
-6: sleep done in loop 3
-1: You say: "boring! 4"
-1: You're boring; I'm leaving */
+1: I'm out of loop
+1: You say: "20: Joe 0"
+1: You say: "21: Ann 0"
+18: sleep done in loop 0
+1: You say: "20: Joe 1"
+19: sleep done in loop 0
+1: You say: "21: Ann 1"
+19: sleep done in loop 1
+1: You say: "21: Ann 2"
+18: sleep done in loop 1
+1: You say: "20: Joe 2"
+19: sleep done in loop 2
+1: You say: "21: Ann 3"
+19: sleep done in loop 3
+1: You say: "21: Ann 4"
+18: sleep done in loop 2
+1: You say: "20: Joe 3"
+19: sleep done in loop 4
+1: You say: "21: Ann 5"
+1: You're boring; I'm leaving.
+*/
