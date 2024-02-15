@@ -1,8 +1,3 @@
-//	Kevin Chen (2017)
-//	Patterns from Pike's Google I/O talk, "Go Concurrency Patterns"
-
-//	Golang restoring sequencing after multiplexing
-
 package main
 
 import (
@@ -32,22 +27,23 @@ func main() {
 
 // fanIn is itself a generator
 func fanIn(ch1, ch2 <-chan Message) <-chan Message { // receives two read-only channels
-	new_ch := make(chan Message)
+	newCh := make(chan Message)
 	go func() {
 		for {
 			msg := <-ch1
 			msg.str = fmt.Sprintf("g%d: %s", getGoroutineID(), msg.str)
-			new_ch <- msg
+			newCh <- msg
 		}
 	}() // launch two goroutine while loops to continuously pipe to new channel
 	go func() {
 		for {
 			msg := <-ch2
 			msg.str = fmt.Sprintf("g%d: %s", getGoroutineID(), msg.str)
-			new_ch <- msg
+			newCh <- msg
 		}
 	}()
-	return new_ch
+	time.After(time.Second)
+	return newCh
 }
 
 func generator(msg string) <-chan Message { // returns receive-only channel

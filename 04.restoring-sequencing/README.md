@@ -1,4 +1,5 @@
-# Generator: function that returns a channel
+# Restoring sequencing
+## Each speaker must wait for a go-ahead.
 ### How it works
 - Send a channel on a channel, making goroutine wait its turn.
 - Receive all messages, then enable them again by sending on a private channel.

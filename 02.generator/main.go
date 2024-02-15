@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// A channel connects the main and boring goroutines so they can communicate.
+// A channel connects the main and boring goroutines, so they can communicate.
 func main() {
 	c := boring("boring!") // Function returning a channel.
 	for i := 0; i < 5; i++ {
