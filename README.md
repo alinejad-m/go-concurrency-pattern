@@ -1,6 +1,6 @@
 # Golang Concurrency + Patterns
 
-*I've just documented my journey of learning Golang concurrency, outlining the key concepts and insights gained along the way.*
+*I've just documented my journey of learning Golang concurrency, outlining the key concepts and insights gained along the way.* 
 ***
 # Definition
 ## Main Concepts
@@ -15,3 +15,8 @@ A **channel** in Go provides a connection between two goroutines, allowing them 
 - Similarly, when the boring function executes c <– value, it waits for a receiver to be ready.
 - A sender and receiver must both be ready to play their part in the communication. Otherwise we wait until they are.
 - Thus channels both communicate and synchronize. 
+
+## Useful Links:
+- [Go Concurrency Patterns Slides](https://go.dev/talks/2012/concurrency.slide)
+- [Go Concurrency Patterns Video](https://www.youtube.com/watch?v=f6kdp27TYZs)
+- [Kevin Repo](https://github.com/kevinniechen/go-concurrency-patterns)

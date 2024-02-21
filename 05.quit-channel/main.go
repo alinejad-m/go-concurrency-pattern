@@ -1,8 +1,3 @@
-//	Kevin Chen (2017)
-//	Patterns from Pike's Google I/O talk, "Go Concurrency Patterns"
-
-//  Deterministically quit goroutine with quit channel option in select
-
 package main
 
 import (
